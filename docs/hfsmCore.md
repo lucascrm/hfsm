@@ -42,11 +42,8 @@ height="8.782cm"}
 ### Flujo de Datos
 
 1.  **Módulos externos** publican eventos en el EventBus
-
 2.  **EventBus** distribuye eventos a los suscriptores
-
 3.  **HFSMCore** recibe eventos y los procesa en el estado actual
-
 4.  **Estados** procesan eventos y pueden:
 
     -   Cambiar a otro estado
@@ -135,14 +132,10 @@ establece el estado inicial.
 **Ejemplo:**
 
 **HFSMCore hfsm;**
-
 **ErrorCode result = hfsm.initialize();**
-
 **if (result != ErrorCode::SUCCESS) {**
-
 ** std::cerr \<\< \"Error al inicializar HFSM: \" \<\<
 static_cast\<int\>(result) \<\< std::endl;**
-
 **}**
 
 #### *HFSMCore::shutdown()*
@@ -165,15 +158,10 @@ ErrorCode HFSMCore::shutdown(bool emergency = false)
 **Ejemplo:**
 
 // Apagado elegante (recomendado)
-
 ErrorCode result = hfsm.shutdown(false);
-
 if (result == ErrorCode::GRACEFUL_SHUTDOWN_TIMEOUT) {
-
 // Forzar apagado de emergencia
-
 hfsm.shutdown(true);
-
 }
 
 ### Gestión de Estados
@@ -197,9 +185,7 @@ ErrorCode HFSMCore::registerState(std::unique_ptr\<IState\> state)
 **Ejemplo:**
 
 // Crear y registrar un estado personalizado
-
 auto myState = std::make_unique\<MyCustomState\>();
-
 ErrorCode result = hfsm.registerState(std::move(myState));
 
 #### *HFSMCore::transitionTo()*
@@ -221,11 +207,8 @@ ErrorCode HFSMCore::transitionTo(uint32_t target)
 **Ejemplo:**
 
 // Transicionar al estado ERROR
-
 ErrorCode result = hfsm.transitionTo(
-
 static_cast\<uint32_t\>(StateType::ERROR)
-
 );
 
 ### Sistema de Eventos
@@ -243,17 +226,11 @@ void HFSMCore::publishEvent(const Event& event)
 **Ejemplo:**
 
 // Publicar evento de batería baja
-
 Event lowBatteryEvent(
-
 EventType::LOW_BATTERY,
-
 12.5, // Nivel de batería
-
 \"BatteryMonitor\"
-
 );
-
 hfsm.publishEvent(lowBatteryEvent);
 
 #### *HFSMCore::getEventBus()*
@@ -268,21 +245,13 @@ directas.*
 **Ejemplo:**
 
 *// Suscribirse directamente al EventBus*
-
 *hfsm.getEventBus().subscribe(*
-
 * \"MyModule\",*
-
 * static_cast\<uint32_t\>(EventType::EMERGENCY_STOP),*
-
 * \[\](const Event& event) {*
-
 * std::cout \<\< \"¡Parada de emergencia recibida!\" \<\< std::endl;*
-
 * },*
-
 * 10 // Alta prioridad*
-
 *);*
 
 ### *Consulta de Estado*
@@ -298,11 +267,8 @@ directas.*
 **Ejemplo:**
 
 *uint32_t currentState = hfsm.getCurrentStateType();*
-
 *if (currentState == static_cast\<uint32_t\>(StateType::ERROR)) {*
-
 * std::cout \<\< \"Sistema en estado de error\" \<\< std::endl;*
-
 *}*
 
 #### *HFSMCore::isRunning()*
@@ -316,11 +282,8 @@ directas.*
 **Ejemplo:**
 
 *while (hfsm.isRunning()) {*
-
 * // Realizar operaciones mientras la HFSM está activa*
-
 * std::this_thread::sleep_for(std::chrono::milliseconds(100));*
-
 *}*
 
 #### *HFSMCore::getStatistics()*
@@ -334,15 +297,11 @@ directas.*
 **Ejemplo:**
 
 *auto stats = hfsm.getStatistics();*
-
 *std::cout \<\< \"Estadísticas HFSM:\" \<\< std::endl;*
-
 *std::cout \<\< \" Transiciones: \" \<\< stats\[\"state_transitions\"\]
 \<\< std::endl;*
-
 *std::cout \<\< \" Eventos procesados: \" \<\<
 stats\[\"events_processed\"\] \<\< std::endl;*
-
 *std::cout \<\< \" Errores: \" \<\< stats\[\"errors\"\] \<\< std::endl;*
 
 ## *Ejemplos de Uso*
@@ -581,267 +540,140 @@ hardware*
 * // Simular carga rápida*
 * std::thread(\[this\]() {*
 * for (int i = 0; i \< 10 && running\_; ++i) {*
-
 * current_battery_level\_ += 10.0;*
-
 * current_battery_level\_ = std::min(100.0, current_battery_level\_);*
-
 * publishBatteryLevel();*
-
 * std::this_thread::sleep_for(std::chrono::seconds(1));*
-
 * }*
-
 * }).detach();*
-
 * }*
-
 * );*
-
 * }*
-
 * *
-
 * void publishBatteryLevel() {*
-
 * ns_fsm::Event event(*
-
 * ns_fsm::EventType::SYSTEM_HEALTH_STATUS,*
-
 * current_battery_level\_,*
-
 * \"BatteryMonitor\"*
-
 * );*
-
 * hfsm\_.publishEvent(event);*
-
 * }*
-
 * *
-
 * void publishLowBattery() {*
-
 * ns_fsm::Event event(*
-
 * ns_fsm::EventType::LOW_BATTERY,*
-
 * current_battery_level\_,*
-
 * \"BatteryMonitor\"*
-
 * );*
-
 * hfsm\_.publishEvent(event);*
-
 * }*
-
 * *
-
 * void publishCriticalBattery() {*
-
 * ns_fsm::Event event(*
-
 * ns_fsm::EventType::CRITICAL_BATTERY,*
-
 * current_battery_level\_,*
-
 * \"BatteryMonitor\"*
-
 * );*
-
 * hfsm\_.publishEvent(event);*
-
 * }*
-
 * *
-
 * void publishBatteryFull() {*
-
 * ns_fsm::Event event(*
-
 * ns_fsm::EventType::ROBOT_CHARGING_COMPLETE,*
-
 * \"Batería completamente cargada\",*
-
 * \"BatteryMonitor\"*
-
 * );*
-
 * hfsm\_.publishEvent(event);*
-
 * }*
-
 *};*
 
 ### *Ejemplo 3: Sistema de Logging Integrado*
 
 *#include \"hfsm_logging.hpp\"*
-
 *#include \"hfsm_core.hpp\"*
-
 *#include \<fstream\>*
 
 *class AdvancedLogger {*
-
 *private:*
-
 * ns_fsm::HFSMLogger& logger\_;*
-
 * std::ofstream log_file\_;*
-
 * *
-
 *public:*
-
 * AdvancedLogger() : logger\_(ns_fsm::HFSMLogger::getInstance()) {*
-
 * setupLogging();*
-
 * }*
-
 * *
-
 * void setupLogging() {*
-
 * // Configurar logger*
-
 * ns_fsm::LogConfig config;*
-
 * config.enable_structured_logging = true;*
-
 * config.enable_file_logging = true;*
-
 * config.enable_console_logging = true;*
-
 * config.max_log_size_mb = 50;*
-
 * config.max_log_files = 10;*
-
 * config.min_level = hardware::DiagnosticLevel::DEBUG;*
-
 * *
-
 * logger\_.initialize(config);*
-
 * *
-
 * // Ejemplos de logging*
-
 * logSystemStart();*
-
 * }*
-
 * *
-
 * void logSystemStart() {*
-
 * logger\_.logStructured(*
-
 * \"System\",*
-
 * hardware::DiagnosticLevel::INFO,*
-
 * \"Sistema HFSM iniciado\",*
-
 * {*
-
 * {\"version\", \"6.0\"},*
-
 * {\"timestamp\", getCurrentTimestamp()},*
-
 * {\"components\", {\"EventBus\", \"StateMachine\", \"Logger\"}}*
-
 * }*
-
 * );*
-
 * }*
-
 * *
-
 * void logStateTransition(ns_fsm::StateType from, ns_fsm::StateType to,
 *
-
 * const std::string& reason = \"\") {*
-
 * ns_fsm::HFSM_LOG_TRANSITION(*
-
 * static_cast\<uint32_t\>(from),*
-
 * static_cast\<uint32_t\>(to),*
-
 * reason,*
-
 * true*
-
 * );*
-
 * }*
-
 * *
-
 * void logEvent(const ns_fsm::Event& event) {*
-
 * ns_fsm::HFSM_LOG_EVENT(event, true, \"EventLogger\");*
-
 * }*
-
 * *
-
 * void logError(ns_fsm::ErrorCode code, const std::string& context) {*
-
 * ns_fsm::HFSM_LOG_ERROR(code, context, \"AdvancedLogger\");*
-
 * }*
-
 * *
-
 * void logPerformance(const std::string& metric, double value, *
-
 * const std::string& unit = \"\") {*
-
 * ns_fsm::HFSM_LOG_PERFORMANCE(metric, value, unit);*
-
 * }*
-
 * *
-
 * void logScope(const std::string& scope_name) {*
-
 * // Usar macros de scope*
-
 * HFSM_LOG_SCOPE_START(scope_name);*
-
 * *
-
 * // Operaciones dentro del scope\...*
-
 * *
-
 * HFSM_LOG_SCOPE_END(scope_name);*
-
 * }*
-
 * *
-
 *private:*
-
 * std::string getCurrentTimestamp() {*
-
 * auto now = std::chrono::system_clock::now();*
-
 * auto time_t_now = std::chrono::system_clock::to_time_t(now);*
-
 * std::stringstream ss;*
-
 * ss \<\< std::put_time(std::localtime(&time_t_now), \"%Y-%m-%d
 %H:%M:%S\");*
-
 * return ss.str();*
-
 * }*
-
 *};*
 
 ## *📊 Diagramas de Flujo*
@@ -861,251 +693,161 @@ height="8.386cm"}
 ![](./100000010000039A000004C2A1513FBE3BFA288E.png){width="8.573cm"
 height="11.324cm"}
 
-## 💡 Mejores Prácticas
+## Mejores Prácticas
 
 ### 1. **Diseño de Estados**
 
-// ✅ CORRECTO - Estado bien diseñado
-
+// CORRECTO - Estado bien diseñado
 class WellDesignedState : public RobotStateInterface {
-
 bool handleEvent(const Event& event) override {
-
 switch (event.type) {
-
 case EventType::SPECIFIC_EVENT:
 
 // Manejar evento específico
-
 return true;
 
 default:
-
 // No manejar otros eventos
-
 return false;
-
 }
 
 }
 
 bool canTransitionTo(uint32_t target) const override {
-
 // Definir explícitamente transiciones permitidas
-
 return target == StateType::NEXT_STATE \|\|
-
 target == StateType::ERROR_STATE;
-
 }
-
 };
 
-// ❌ INCORRECTO - Estado mal diseñado
-
+// INCORRECTO - Estado mal diseñado
 class BadState : public RobotStateInterface {
-
 bool handleEvent(const Event& event) override {
-
-// ❌ Manejar TODOS los eventos
-
-// ❌ Lógica de hardware directa
-
-// ❌ Transiciones implícitas
-
+// Manejar TODOS los eventos
+// Lógica de hardware directa
+// Transiciones implícitas
 return true; // Siempre retorna true
-
 }
-
 };
 
 ### 2. **Gestión de Eventos**
 
-// ✅ CORRECTO - Publicación de eventos
+// CORRECTO - Publicación de eventos
 
 void publishEventSafely() {
-
 // Validar datos antes de publicar
-
 if (isDataValid()) {
-
 Event event(
-
 EventType::DATA_READY,
-
 getProcessedData(),
-
 \"ModuleName\",
-
 getCurrentTimestamp(),
-
 0 // Prioridad normal
-
 );
 
 hfsm.publishEvent(event);
-
+}
 }
 
-}
-
-// ✅ CORRECTO - Suscripción robusta
-
+// CORRECTO - Suscripción robusta
 void setupSubscriptions() {
-
 hfsm.getEventBus().subscribe(
-
 \"UniqueModuleID\",
-
 static_cast\<uint32_t\>(EventType::IMPORTANT_EVENT),
-
 \[this\](const Event& event) {
 
 try {
-
 processImportantEvent(event);
-
 } catch (const std::exception& e) {
 
 // Manejar error sin romper el sistema
-
 logError(\"Error processing event\", e.what());
-
 }
-
 },
-
 10 // Prioridad adecuada
-
 );
-
 }
 
 ### 3. **Manejo de Errores**
 
-// ✅ CORRECTO - Manejo robusto de errores
-
+//  CORRECTO - Manejo robusto de errores
 ErrorCode performCriticalOperation() {
 
 try {
-
 // Operación que puede fallar
-
 if (!criticalOperation()) {
-
 // Error específico
-
 return ErrorCode::OPERATION_FAILED;
-
 }
 
 // Publicar evento de éxito
-
 publishEvent(EventType::OPERATION_SUCCESS);
-
 return ErrorCode::SUCCESS;
-
 } catch (const std::exception& e) {
 
 // Error no esperado
-
 publishEvent(EventType::SYSTEM_ERROR, e.what());
-
 return ErrorCode::CRITICAL_FAILURE;
-
+}
 }
 
-}
-
-// ✅ CORRECTO - Recuperación de errores
-
+// CORRECTO - Recuperación de errores
 void handleErrorState() {
-
 // 1. Detener operaciones peligrosas
-
 emergencyStop();
 
 // 2. Diagnosticar el problema
-
 ErrorInfo diagnosis = diagnoseError();
 
 // 3. Intentar recuperación automática
-
 if (canRecoverAutomatically(diagnosis)) {
-
 attemptRecovery();
-
 } else {
-
 // 4. Solicitar intervención
-
 requestHumanIntervention(diagnosis);
-
 }
-
 }
 
 ### 4. **Performance y Optimización**
 
-// ✅ CORRECTO - Optimización de eventos
+// CORRECTO - Optimización de eventos
 
 class OptimizedModule {
-
 private:
-
 EventBus& event_bus\_;
-
 uint32_t last_event_type\_{0};
-
 public:
-
 void publishOptimizedEvent(EventType type, const EventData& data) {
 
 // Evitar publicar eventos duplicados consecutivos
-
 if (type != last_event_type\_) {
-
 Event event(type, data, \"OptimizedModule\");
-
 event_bus\_.publish(event);
-
 last_event_type\_ = type;
-
 }
-
 }
-
 };
 
-// ✅ CORRECTO - Uso eficiente de memoria
+// CORRECTO - Uso eficiente de memoria
 
 void createStatesEfficiently() {
 
 // Usar fábrica para creación bajo demanda
-
 auto state_factory = RobotStateFactory::getInstance();
 
 // Crear solo los estados necesarios
-
 std::vector\<uint32_t\> required_states = {
-
 static_cast\<uint32_t\>(StateType::IDLE),
-
 static_cast\<uint32_t\>(StateType::NAVIGATING)
-
 };
 
 for (auto state_type : required_states) {
-
 auto state = state_factory.createState(state_type);
-
 // Configurar estado\...
-
+}
 }
 
-}
-
-## 🔍 Solución de Problemas
+## Solución de Problemas
 
 ### Problema Común 1: **Eventos no se están procesando**
 
@@ -1117,43 +859,27 @@ auto state = state_factory.createState(state_type);
 **Solución:**
 
 // Verificar que la HFSM esté inicializada
-
 if (!hfsm.isInitialized()) {
-
 hfsm.initialize();
-
 }
 
 // Verificar suscripciones
-
 auto& event_bus = hfsm.getEventBus();
-
 auto stats = event_bus.getStats();
-
 std::cout \<\< \"Suscriptores activos: \" \<\< stats.total_subscribers
 \<\< std::endl;
 
 // Depurar publicación de eventos
-
 hfsm.getEventBus().subscribe(
-
 \"DebugMonitor\",
-
 static_cast\<uint32_t\>(EventType::ALL), // Usar 0 para todos los
 eventos
-
 \[\](const Event& event) {
-
 std::cout \<\< \"\[DEBUG\] Evento publicado: \"
-
 \<\< eventTypeToString(event.type)
-
 \<\< \" desde \" \<\< event.source_module
-
 \<\< std::endl;
-
 }
-
 );
 
 ### Problema Común 2: **Transiciones que fallan**
@@ -1168,33 +894,22 @@ std::cout \<\< \"\[DEBUG\] Evento publicado: \"
 ErrorCode result = hfsm.transitionTo(target_state);
 
 if (result != ErrorCode::SUCCESS) {
-
 // Diagnosticar el problema
-
 std::cout \<\< \"Error en transición: \" \<\< static_cast\<int\>(result)
 \<\< std::endl;
 
 // Verificar si el estado destino existe
-
 if (!hfsm.isStateRegistered(target_state)) {
-
 std::cout \<\< \"Estado no registrado: \" \<\< target_state \<\<
 std::endl;
-
 }
 
 // Verificar si la transición es permitida
-
 uint32_t current_state = hfsm.getCurrentStateType();
-
 if (!hfsm.isStateTransitionPossible(current_state, target_state)) {
-
 std::cout \<\< \"Transición no permitida de \"
-
 \<\< current_state \<\< \" a \" \<\< target_state \<\< std::endl;
-
 }
-
 }
 
 ### Problema Común 3: **Deadlocks o Bloqueos**
@@ -1207,45 +922,31 @@ std::cout \<\< \"Transición no permitida de \"
 **Solución:**
 
 // 1. Verificar timeout de estados
-
 auto current_state_type = hfsm.getCurrentStateType();
-
 auto state = hfsm.getState(current_state_type); // Método hipotético
 
 if (state) {
-
 auto timeout = state-\>getTimeout();
-
 std::cout \<\< \"Timeout configurado: \" \<\< timeout.count() \<\<
 \"ms\" \<\< std::endl;
-
 }
 
 // 2. Verificar bloqueos en mutex
-
 // Añadir logs en puntos críticos
 
 class DebugHFSM : public HFSMCore {
-
 void transitionToInternal(uint32_t target, bool emergency) override {
-
 std::cout \<\< \"\[DEBUG\] Iniciando transición a \" \<\< target \<\<
 std::endl;
-
 HFSMCore::transitionToInternal(target, emergency);
-
 std::cout \<\< \"\[DEBUG\] Transición completada\" \<\< std::endl;
-
 }
-
 };
 
 // 3. Usar shutdown de emergencia si es necesario
 
 if (system_is_frozen) {
-
 hfsm.shutdown(true); // Shutdown inmediato
-
 }
 
 ### Problema Común 4: **Fugas de Memoria**
@@ -1258,63 +959,41 @@ hfsm.shutdown(true); // Shutdown inmediato
 **Solución:**
 
 // 1. Usar smart pointers correctamente
-
 std::unique_ptr\<IState\> createState() {
-
-return std::make_unique\<MyState\>(); // ✅ CORRECTO
-
-// return new MyState(); // ❌ INCORRECTO
-
+return std::make_unique\<MyState\>(); // CORRECTO
+// return new MyState(); // INCORRECTO
 }
 
 // 2. Limpiar eventos antiguos del EventBus
-
 void cleanupOldEvents() {
-
 auto& event_bus = hfsm.getEventBus();
-
 auto stats = event_bus.getStats();
 
 if (stats.pending_events \> 1000) {
-
 std::cout \<\< \"Muchos eventos pendientes: \"
-
 \<\< stats.pending_events \<\< std::endl;
-
 // Considerar aumentar la prioridad del procesamiento
-
 }
-
 }
 
 // 3. Monitorizar uso de memoria
 
 #include \<sys/resource.h\>
-
 void monitorMemoryUsage() {
-
 struct rusage usage;
-
 getrusage(RUSAGE_SELF, &usage);
-
 std::cout \<\< \"Uso de memoria: \"
-
 \<\< usage.ru_maxrss \<\< \" KB\" \<\< std::endl;
-
 }
 
-## 📈 Estadísticas y Monitoreo
+## Estadísticas y Monitoreo
 
 ### Métricas Clave a Monitorear
 
 void monitorHFSMHealth(const HFSMCore& hfsm) {
-
 // 1. Estadísticas básicas
-
 auto stats = hfsm.getStatistics();
-
 std::cout \<\< \"=== ESTADÍSTICAS HFSM ===\" \<\< std::endl;
-
 std::cout \<\< \"Ciclos totales: \" \<\< stats\[\"total_loops\"\] \<\<
 std::endl;
 
@@ -1345,9 +1024,7 @@ std::cout \<\< \"En ejecución: \" \<\< (hfsm.isRunning() ? \"Sí\" :
 // 3. EventBus
 
 auto& event_bus = hfsm.getEventBus();
-
 auto bus_stats = event_bus.getStats();
-
 std::cout \<\< \"\\n=== EVENT BUS ===\" \<\< std::endl;
 
 std::cout \<\< \"Eventos pendientes: \" \<\< bus_stats.pending_events
@@ -1358,134 +1035,90 @@ bus_stats.total_subscribers \<\< std::endl;
 
 std::cout \<\< \"Tipos de eventos: \" \<\< bus_stats.event_types \<\<
 std::endl;
-
 }
 
 ### Dashboard de Monitoreo en Tiempo Real
 
 class HFSMDashboard {
-
 private:
-
 const HFSMCore& hfsm\_;
-
 std::thread monitor_thread\_;
-
 std::atomic\<bool\> running\_{false};
 
 public:
-
 HFSMDashboard(const HFSMCore& hfsm) : hfsm\_(hfsm) {}
 
 void start() {
-
 running\_ = true;
-
 monitor_thread\_ = std::thread(&HFSMDashboard::monitorLoop, this);
-
 }
 
 void stop() {
-
 running\_ = false;
-
 if (monitor_thread\_.joinable()) {
-
 monitor_thread\_.join();
-
 }
-
 }
 
 private:
-
 void monitorLoop() {
-
 while (running\_) {
-
 displayDashboard();
-
 std::this_thread::sleep_for(std::chrono::seconds(1));
-
 }
-
 }
 
 void displayDashboard() {
-
 system(\"clear\"); // Limpiar consola (Linux/Mac)
 
 std::cout \<\< \"╔════════════════════════════════════════════╗\" \<\<
 std::endl;
-
 std::cout \<\< \"║ DASHBOARD HFSM v6.0 - TIEMPO REAL ║\" \<\< std::endl;
-
 std::cout \<\< \"╠════════════════════════════════════════════╣\" \<\<
 std::endl;
 
 // Estado actual
 
 std::cout \<\< \"║ Estado: \" \<\< std::setw(35) \<\< std::left
-
 \<\< hfsm\_.getCurrentStateName() \<\< \"║\" \<\< std::endl;
 
 // Estadísticas
-
 auto stats = hfsm\_.getStatistics();
-
 std::cout \<\< \"║ Transiciones: \" \<\< std::setw(31) \<\< std::left
-
 \<\< stats\[\"state_transitions\"\].get\<uint64_t\>() \<\< \"║\" \<\<
 std::endl;
 
 std::cout \<\< \"║ Eventos/min: \" \<\< std::setw(32) \<\< std::left
-
 \<\< calculateEventsPerMinute() \<\< \"║\" \<\< std::endl;
-
 std::cout \<\< \"║ Uptime: \" \<\< std::setw(36) \<\< std::left
-
 \<\< formatUptime() \<\< \"║\" \<\< std::endl;
 
 // Health status
-
 std::cout \<\< \"║ Health: \" \<\< std::setw(36) \<\< std::left
-
 \<\< calculateHealthStatus() \<\< \"║\" \<\< std::endl;
 
 std::cout \<\< \"╚════════════════════════════════════════════╝\" \<\<
 std::endl;
-
 std::cout \<\< \"\\nPresione Ctrl+C para salir\...\" \<\< std::endl;
 
 }
 
 uint64_t calculateEventsPerMinute() {
-
 static uint64_t last_count = 0;
-
 static auto last_time = std::chrono::steady_clock::now();
-
 auto current_stats = hfsm\_.getStatistics();
-
 uint64_t current_count = current_stats\[\"events_processed\"\];
-
 auto current_time = std::chrono::steady_clock::now();
 
 auto elapsed = std::chrono::duration_cast\<std::chrono::seconds\>(
-
 current_time - last_time).count();
 
 if (elapsed \>= 60) {
-
 uint64_t events_per_minute = (current_count - last_count) \* 60 /
 elapsed;
-
 last_count = current_count;
-
 last_time = current_time;
-
 return events_per_minute;
-
 }
 
 return 0;
@@ -1493,38 +1126,26 @@ return 0;
 }
 
 std::string formatUptime() {
-
 // Implementar cálculo de uptime
-
 return \"00:00:00\"; // Placeholder
-
 }
 
 std::string calculateHealthStatus() {
-
 auto stats = hfsm\_.getStatistics();
-
 uint64_t errors = stats\[\"errors\"\].get\<uint64_t\>();
-
 uint64_t events = stats\[\"events_processed\"\].get\<uint64_t\>();
 
 if (events == 0) return \"INACTIVO\";
-
 double error_rate = static_cast\<double\>(errors) / events \* 100;
 
-if (error_rate \< 1.0) return \"✅ EXCELENTE\";
-
-else if (error_rate \< 5.0) return \"⚠️ BUENO\";
-
-else if (error_rate \< 10.0) return \"⚠️ ADVERTENCIA\";
-
-else return \"❌ CRÍTICO\";
-
+if (error_rate \< 1.0) return \"EXCELENTE\";
+else if (error_rate \< 5.0) return \"BUENO\";
+else if (error_rate \< 10.0) return \"ADVERTENCIA\";
+else return \"CRÍTICO\";
 }
-
 };
 
-## 🎯 Conclusión
+## Conclusión
 
 La **HFSMCore v6.0** proporciona una base sólida para implementar
 máquinas de estados jerárquicas en sistemas robóticos y embebidos. Su
@@ -1550,162 +1171,114 @@ logging integrado la hacen adecuada para aplicaciones críticas.
 Para más información o soporte técnico, consultar la documentación
 completa o contactar al equipo de desarrollo.
 
-# 📝 Guía Completa: Registro de Estados en HFSM Core
+# Guía Completa: Registro de Estados en HFSM Core
 
-## 🎯 Métodos de Registro Disponibles
+## Métodos de Registro Disponibles
 
 ### 1. **Registro Manual Estado por Estado** (Recomendado para control fino)
 
 // Método 1: Registro directo usando std::make_unique
 
 #include \"hfsm_core.hpp\"
-
 #include \"RobotStates.hpp\"
 
 void registerStatesManually(HFSMCore& hfsm) {
-
 std::cout \<\< \"=== REGISTRO MANUAL DE ESTADOS ===\" \<\< std::endl;
 
 // Registrar cada estado individualmente
-
 ErrorCode result;
 
 // Estado STARTUP
-
 result = hfsm.registerState(
-
 std::make_unique\<StartupState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ StartupState registrado\" \<\< std::endl;
-
 }
 
 // Estado IDLE
-
 result = hfsm.registerState(
-
 std::make_unique\<IdleState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ IdleState registrado\" \<\< std::endl;
-
 }
 
 // Estado PLANNING
-
 result = hfsm.registerState(
 
 std::make_unique\<PlanningState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ PlanningState registrado\" \<\< std::endl;
-
 }
 
 // Estado NAVIGATING
-
 result = hfsm.registerState(
-
 std::make_unique\<NavigatingState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ NavigatingState registrado\" \<\< std::endl;
-
 }
 
 // Estado OBSTACLE_AVOIDANCE
-
 result = hfsm.registerState(
 
 std::make_unique\<ObstacleAvoidanceState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ ObstacleAvoidanceState registrado\" \<\< std::endl;
-
 }
 
 // Estado CHARGING
-
 result = hfsm.registerState(
-
 std::make_unique\<ChargingState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ ChargingState registrado\" \<\< std::endl;
-
 }
 
 // Estado ERROR
 
 result = hfsm.registerState(
-
 std::make_unique\<ErrorState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ ErrorState registrado\" \<\< std::endl;
-
 }
 
 // Estado TELEOPERATION
 
 result = hfsm.registerState(
-
 std::make_unique\<TeleoperationState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ TeleoperationState registrado\" \<\< std::endl;
-
 }
 
 // Estados del sistema base (opcionales pero recomendados)
-
 result = hfsm.registerState(
-
 std::make_unique\<CleaningState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ CleaningState registrado\" \<\< std::endl;
-
 }
 
 result = hfsm.registerState(
-
 std::make_unique\<ShutdownState\>()
-
 );
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \"✓ ShutdownState registrado\" \<\< std::endl;
-
 }
 
 std::cout \<\< \"==================================\" \<\< std::endl;
@@ -1715,260 +1288,163 @@ std::cout \<\< \"==================================\" \<\< std::endl;
 ### 2. **Registro Automático usando la Fábrica de Estados** (Recomendado para producción)
 
 // Método 2: Registro automático con fábrica
-
 #include \"RobotStateFactory.hpp\"
 
 void registerStatesWithFactory(HFSMCore& hfsm, bool
 include_system_states = true) {
-
 std::cout \<\< \"=== REGISTRO AUTOMÁTICO CON FÁBRICA ===\" \<\<
 std::endl;
 
 // Definir lista de estados del robot
-
 std::vector\<StateType\> robot_states = {
-
 StateType::INITIALIZING, // StartupState
-
 StateType::IDLE,
-
 StateType::MISSION_PLANNING, // PlanningState
-
 StateType::NAVIGATING_TO_GOAL, // NavigatingState
-
 StateType::OBSTACLE_AVOIDANCE,
-
 StateType::CHARGING,
-
 StateType::ERROR,
-
 StateType::TELEOPERATION
-
 };
 
 // Opcional: incluir estados del sistema
 
 if (include_system_states) {
-
 robot_states.push_back(StateType::CLEANING);
-
 robot_states.push_back(StateType::SHUTDOWN);
-
 robot_states.push_back(StateType::READY);
-
 robot_states.push_back(StateType::OPERATIONAL);
-
 robot_states.push_back(StateType::RECOVERING);
-
 }
 
 int success_count = 0;
-
 int error_count = 0;
 
 // Registrar todos los estados
-
 for (auto state_type : robot_states) {
-
 try {
-
 // Crear estado usando la fábrica
-
 auto state = RobotStateFactory::getInstance().createState(
-
 static_cast\<uint32_t\>(state_type)
-
 );
 
 if (state) {
-
 ErrorCode result = hfsm.registerState(std::move(state));
 
 if (result == ErrorCode::SUCCESS) {
-
 success_count++;
-
 std::cout \<\< \"✓ \" \<\< stateTypeToString(state_type)
-
 \<\< \" registrado\" \<\< std::endl;
-
 } else {
-
 error_count++;
-
 std::cerr \<\< \"✗ Error registrando \"
-
 \<\< stateTypeToString(state_type)
-
 \<\< \": \" \<\< static_cast\<int\>(result) \<\< std::endl;
-
 }
 
 } else {
-
 error_count++;
-
 std::cerr \<\< \"✗ Fábrica no pudo crear estado: \"
-
 \<\< stateTypeToString(state_type) \<\< std::endl;
-
 }
 
 } catch (const std::exception& e) {
-
 error_count++;
-
 std::cerr \<\< \"✗ Excepción registrando \"
-
 \<\< stateTypeToString(state_type)
-
 \<\< \": \" \<\< e.what() \<\< std::endl;
-
 }
-
 }
 
 std::cout \<\< \"\\nResumen: \" \<\< success_count \<\< \" exitosos, \"
-
 \<\< error_count \<\< \" errores\" \<\< std::endl;
-
 std::cout \<\< \"=======================================\" \<\<
 std::endl;
-
 }
 
 ### 3. **Registro desde Archivo de Configuración** (Para máxima flexibilidad)
 
 // Método 3: Registro basado en configuración JSON
-
 #include \<fstream\>
-
 #include \<nlohmann/json.hpp\>
 
 void registerStatesFromConfig(HFSMCore& hfsm, const std::string&
 config_path) {
-
 std::cout \<\< \"=== REGISTRO DESDE CONFIGURACIÓN ===\" \<\< std::endl;
 
 try {
-
 // Leer archivo de configuración
-
 std::ifstream config_file(config_path);
-
 if (!config_file.is_open()) {
-
 throw std::runtime_error(\"No se pudo abrir archivo de configuración:
 \" + config_path);
-
 }
 
 nlohmann::json config;
-
 config_file \>\> config_file;
 
 // Obtener lista de estados desde configuración
-
 auto states_config = config\[\"hfsm\"\]\[\"states\"\];
 
 if (!states_config.is_array()) {
-
 throw std::runtime_error(\"Configuración de estados no es un array\");
-
 }
 
 int registered = 0;
-
 for (const auto& state_config : states_config) {
 
 // Extraer información del estado
-
 std::string state_name = state_config\[\"name\"\];
-
 uint32_t state_type = state_config\[\"type\"\];
-
 std::string state_class = state_config\[\"class\"\];
-
 std::cout \<\< \"Registrando estado: \" \<\< state_name
-
 \<\< \" (tipo: \" \<\< state_type \<\< \")\" \<\< std::endl;
 
 // Crear estado basado en la clase especificada
-
 std::unique_ptr\<IState\> state;
-
 if (state_class == \"StartupState\") {
-
 state = std::make_unique\<StartupState\>();
-
 } else if (state_class == \"IdleState\") {
-
 state = std::make_unique\<IdleState\>();
-
 } else if (state_class == \"PlanningState\") {
-
 state = std::make_unique\<PlanningState\>();
-
 } else if (state_class == \"NavigatingState\") {
-
 state = std::make_unique\<NavigatingState\>();
-
 } else if (state_class == \"ObstacleAvoidanceState\") {
-
 state = std::make_unique\<ObstacleAvoidanceState\>();
-
 } else if (state_class == \"ChargingState\") {
-
 state = std::make_unique\<ChargingState\>();
-
 } else if (state_class == \"ErrorState\") {
-
 state = std::make_unique\<ErrorState\>();
-
 } else if (state_class == \"TeleoperationState\") {
-
 state = std::make_unique\<TeleoperationState\>();
-
 } else {
-
 std::cerr \<\< \" ✗ Clase de estado desconocida: \" \<\< state_class
 \<\< std::endl;
 
 continue;
-
 }
 
 // Registrar estado en HFSM
-
 ErrorCode result = hfsm.registerState(std::move(state));
 
 if (result == ErrorCode::SUCCESS) {
-
 std::cout \<\< \" ✓ Estado registrado exitosamente\" \<\< std::endl;
-
 registered++;
-
 } else {
-
 std::cerr \<\< \" ✗ Error al registrar: \" \<\<
 static_cast\<int\>(result) \<\< std::endl;
-
 }
-
 }
 
 std::cout \<\< \"\\nTotal estados registrados: \" \<\< registered \<\<
 std::endl;
-
 std::cout \<\< \"==================================\" \<\< std::endl;
 
 } catch (const std::exception& e) {
-
 std::cerr \<\< \"Error en registro desde configuración: \" \<\< e.what()
 \<\< std::endl;
-
 }
-
 }
 
 // Ejemplo de archivo de configuración (config/hfsm_states.json):
@@ -2715,22 +2191,19 @@ std::cout \<\< \"\\n=== INICIANDO APAGADO ===\" \<\< std::endl;
 
 robot.stop();
 
-std::cout \<\< \"\\n✅ Sistema apagado exitosamente\" \<\< std::endl;
+std::cout \<\< \"\\nSistema apagado exitosamente\" \<\< std::endl;
 
 } catch (const std::exception& e) {
 
-std::cerr \<\< \"\\n❌ Error en el sistema: \" \<\< e.what() \<\<
+std::cerr \<\< \"\\nError en el sistema: \" \<\< e.what() \<\<
 std::endl;
-
 return 1;
-
 }
 
 return 0;
-
 }
 
-## 🎯 Plantilla para Nuevos Estados Personalizados
+## Plantilla para Nuevos Estados Personalizados
 
 // CustomStates.hpp - Cómo crear y registrar estados personalizados
 
@@ -2743,93 +2216,63 @@ return 0;
 #include \<nlohmann/json.hpp\>
 
 namespace ns_fsm {
-
 //
 ============================================================================
-
 // EJEMPLO: ESTADO PERSONALIZADO PARA MANIPULACIÓN
-
 //
 ============================================================================
 
 class ManipulationState : public RobotStateInterface {
-
 private:
 
 bool manipulation_active\_{false};
-
 std::string current_object\_;
-
 int progress\_{0};
 
 public:
-
 ManipulationState()
-
 : current_object\_(\"desconocido\") {}
 
 // Implementación de IState
-
 uint32_t getType() const override {
 
 // Usar un ID único (preferiblemente \> 200 para estados personalizados)
-
 return 200;
-
 }
 
 std::string getName() const override {
-
 return \"MANIPULATION\";
-
 }
 
 void setHFSMContext(void\* context) override {
-
 RobotStateInterface::setHFSMContext(context);
-
 }
 
 bool onEnter() override {
-
 manipulation_active\_ = true;
-
 progress\_ = 0;
 
 // Publicar evento de inicio
-
 publishEvent(EventType::ROBOT_MANIPULATION_START,
-
 \"Iniciando manipulación de objeto\",
-
 \"ManipulationState\");
-
 HAL_INFO(\"ManipulationState\", \"Entrando en modo de manipulación\");
 
 return true;
-
 }
 
 void update() override {
 
 if (manipulation_active\_) {
-
 // Simular progreso
-
 progress\_ += 5;
 
 // Publicar progreso periódico
-
 if (progress\_ % 25 == 0) {
-
 nlohmann::json progress_data = {
-
 {\"progress\", progress\_},
-
 {\"object\", current_object\_},
-
 {\"stage\", getCurrentStage()}
-
 };
 
 publishEvent(EventType::SYSTEM_HEALTH_STATUS,
@@ -3013,7 +2456,7 @@ std::endl;
 
 #endif // CUSTOM_STATES_HPP
 
-## 📊 Verificación del Registro
+## Verificación del Registro
 
 // verification_tool.cpp - Herramienta para verificar estados
 registrados
@@ -3026,7 +2469,7 @@ registrados
 
 void verifyRegisteredStates(const ns_fsm::HFSMCore& hfsm) {
 
-std::cout \<\< \"\\n🔍 VERIFICACIÓN DE ESTADOS REGISTRADOS\" \<\<
+std::cout \<\< \"\\nVERIFICACIÓN DE ESTADOS REGISTRADOS\" \<\<
 std::endl;
 
 std::cout \<\< \"======================================\" \<\<
@@ -3067,7 +2510,7 @@ std::cout \<\< std::left \<\< std::setw(10) \<\< state_id
 
 \<\< std::setw(25) \<\< state_name
 
-\<\< std::setw(15) \<\< (reachable ? \"✅ Sí\" : \"❌ No\")
+\<\< std::setw(15) \<\< (reachable ? \" Sí\" : \" No\")
 
 \<\< std::endl;
 
@@ -3075,22 +2518,22 @@ std::cout \<\< std::left \<\< std::setw(10) \<\< state_id
 
 // Verificar estado actual
 
-std::cout \<\< \"\\n📊 ESTADO ACTUAL:\" \<\< std::endl;
+std::cout \<\< \"\\n ESTADO ACTUAL:\" \<\< std::endl;
 
 std::cout \<\< \" ID: \" \<\< hfsm.getCurrentStateType() \<\< std::endl;
 
 std::cout \<\< \" Nombre: \" \<\< hfsm.getCurrentStateName() \<\<
 std::endl;
 
-std::cout \<\< \" Inicializado: \" \<\< (hfsm.isInitialized() ? \"✅
-Sí\" : \"❌ No\") \<\< std::endl;
+std::cout \<\< \" Inicializado: \" \<\< (hfsm.isInitialized() ? \"
+Sí\" : \" No\") \<\< std::endl;
 
-std::cout \<\< \" En ejecución: \" \<\< (hfsm.isRunning() ? \"✅ Sí\" :
-\"❌ No\") \<\< std::endl;
+std::cout \<\< \" En ejecución: \" \<\< (hfsm.isRunning() ? \" Sí\" :
+\" No\") \<\< std::endl;
 
 // Verificar transiciones posibles
 
-std::cout \<\< \"\\n🔄 TRANSICIONES POSIBLES DESDE EL ESTADO ACTUAL:\"
+std::cout \<\< \"\\n TRANSICIONES POSIBLES DESDE EL ESTADO ACTUAL:\"
 \<\< std::endl;
 
 int possible_transitions = 0;
@@ -3110,7 +2553,7 @@ possible_transitions++;
 
 if (possible_transitions == 0) {
 
-std::cout \<\< \" ⚠️ No hay transiciones posibles (¿estado final?)\"
+std::cout \<\< \" No hay transiciones posibles (¿estado final?)\"
 \<\< std::endl;
 
 }
@@ -3120,7 +2563,7 @@ std::endl;
 
 }
 
-## 🚨 Solución de Problemas Comunes
+## Solución de Problemas Comunes
 
 ### Problema 1: \"Estado ya registrado\"
 
@@ -3133,7 +2576,7 @@ uint32_t state_type = state-\>getType();
 
 if (hfsm.isStateRegistered(state_type)) {
 
-std::cout \<\< \"⚠️ Estado \" \<\< state_type \<\< \" ya está
+std::cout \<\< \" Estado \" \<\< state_type \<\< \" ya está
 registrado\" \<\< std::endl;
 
 return ErrorCode::STATE_REGISTRATION_ERROR;
@@ -3216,9 +2659,9 @@ hfsm.registerState(std::move(state));
 
 }
 
-## 📋 Resumen de Mejores Prácticas
+## Resumen de Mejores Prácticas
 
-### ✅ **HACER:**
+### **HACER:**
 
 1.  **Usar la fábrica de estados** para creación consistente
 2.  **Verificar duplicados** antes de registrar
@@ -3227,40 +2670,31 @@ hfsm.registerState(std::move(state));
 5.  **Validar transiciones** en cada estado
 6.  **Usar logging estructurado** para trazabilidad
 
-### ❌ **NO HACER:**
+### **NO HACER:**
 
-1.  ❌ Registrar estados duplicados
-2.  ❌ Olvidar estados críticos del sistema
-3.  ❌ Registrar estados sin contexto
-4.  ❌ Ignorar códigos de error del registro
-5.  ❌ Usar IDs de estado no únicos
-6.  ❌ Registrar estados en tiempo de ejecución crítico
+1.  Registrar estados duplicados
+2.  Olvidar estados críticos del sistema
+3.  Registrar estados sin contexto
+4.  Ignorar códigos de error del registro
+5.  Usar IDs de estado no únicos
+6.  Registrar estados en tiempo de ejecución crítico
 
-### 🔧 **Configuración Recomendada:**
+### **Configuración Recomendada:**
 
 // Configuración mínima para un sistema robótico
-
 std::vector\<StateType\> minimal_robot_states = {
-
 StateType::INITIALIZING, // Startup
-
 StateType::IDLE, // Espera
-
 StateType::MISSION_PLANNING, // Planificación
-
 StateType::NAVIGATING_TO_GOAL,// Navegación
-
 StateType::ERROR, // Manejo de errores
-
 StateType::SHUTDOWN, // Apagado
-
 StateType::CLEANING // Limpieza para shutdown elegante
-
 };
 
-# 📡 Guía Completa: Suscripción de Estados a Eventos en HFSM
+# Guía Completa: Suscripción de Estados a Eventos en HFSM
 
-## 🎯 Dos Estrategias de Suscripción
+## Dos Estrategias de Suscripción
 
 ### Estrategia 1: **Suscripción Directa en el Estado** (Recomendada)
 
@@ -3276,81 +2710,53 @@ namespace ns_fsm {
 
 //
 ============================================================================
-
 // ESTADO BASE MEJORADO CON SUSCRIPCIONES AUTOMÁTICAS
-
 //
 ============================================================================
 
 class EnhancedRobotState : public RobotStateInterface {
-
 protected:
-
 std::vector\<std::string\> subscription_ids\_;
-
 EventBus\* event_bus\_{nullptr};
 
 public:
-
 EnhancedRobotState() = default;
-
 virtual \~EnhancedRobotState() {
-
 // Limpiar suscripciones al destruir
-
 cleanupSubscriptions();
-
 }
 
 void setHFSMContext(void\* context) override {
-
 RobotStateInterface::setHFSMContext(context);
 
 if (hfsm_core\_) {
-
 event_bus\_ = &hfsm_core\_-\>getEventBus();
-
 setupSubscriptions();
-
 }
-
 }
 
 protected:
 
 // Método para que las clases derivadas definan sus suscripciones
-
 virtual void defineSubscriptions() = 0;
 
 // Helper para suscribirse a eventos
-
 void subscribeToEvent(EventType event_type,
-
 std::function\<void(const Event&)\> callback,
-
 int priority = 0,
-
 const std::string& custom_id = \"\") {
 
 if (!event_bus\_) return;
-
 std::string subscription_id = custom_id.empty()
-
 ? getName() + \"\_\" +
 std::to_string(static_cast\<uint32_t\>(event_type))
-
 : custom_id;
 
 event_bus\_-\>subscribe(
-
 subscription_id,
-
 static_cast\<uint32_t\>(event_type),
-
 callback,
-
 priority
-
 );
 
 subscription_ids\_.push_back(subscription_id);
@@ -5315,7 +4721,7 @@ running\_ = true;
 
 system_thread\_ = std::thread(&CompleteRobotSystem::systemLoop, this);
 
-std::cout \<\< \"✅ Sistema iniciado exitosamente\" \<\< std::endl;
+std::cout \<\< \"Sistema iniciado exitosamente\" \<\< std::endl;
 
 printSystemStatus();
 
@@ -5323,7 +4729,7 @@ printSystemStatus();
 
 void shutdown() {
 
-std::cout \<\< \"\\n🛑 APAGANDO SISTEMA\...\" \<\< std::endl;
+std::cout \<\< \"\\nAPAGANDO SISTEMA\...\" \<\< std::endl;
 
 running\_ = false;
 
@@ -5355,7 +4761,7 @@ hfsm\_-\>shutdown(false);
 
 ns_fsm::HFSMLogger::getInstance().shutdown();
 
-std::cout \<\< \"✅ Sistema apagado exitosamente\" \<\< std::endl;
+std::cout \<\< \"Sistema apagado exitosamente\" \<\< std::endl;
 
 }
 
@@ -5363,7 +4769,7 @@ std::cout \<\< \"✅ Sistema apagado exitosamente\" \<\< std::endl;
 
 void sendMission(const std::string& mission) {
 
-std::cout \<\< \"\\n🚀 ENVIANDO MISIÓN: \" \<\< mission \<\< std::endl;
+std::cout \<\< \"\\nENVIANDO MISIÓN: \" \<\< mission \<\< std::endl;
 
 ns_fsm::Event mission_event(
 
@@ -5395,7 +4801,7 @@ hardware::DiagnosticLevel::INFO,
 
 void emergencyStop() {
 
-std::cout \<\< \"\\n🛑 ACTIVANDO PARADA DE EMERGENCIA\" \<\< std::endl;
+std::cout \<\< \"\\nACTIVANDO PARADA DE EMERGENCIA\" \<\< std::endl;
 
 ns_fsm::Event emergency_event(
 
@@ -5425,7 +4831,7 @@ hardware::DiagnosticLevel::ERROR,
 
 void requestShutdown() {
 
-std::cout \<\< \"\\n⏹️ SOLICITANDO SHUTDOWN ELEGANTE\" \<\< std::endl;
+std::cout \<\< \"\\nSOLICITANDO SHUTDOWN ELEGANTE\" \<\< std::endl;
 
 ns_fsm::Event shutdown_event(
 
@@ -5443,15 +4849,15 @@ hfsm\_-\>publishEvent(shutdown_event);
 
 void printSystemStatus() {
 
-std::cout \<\< \"\\n📊 ESTADO DEL SISTEMA:\" \<\< std::endl;
+std::cout \<\< \"\\nESTADO DEL SISTEMA:\" \<\< std::endl;
 
 std::cout \<\< \" HFSM Estado: \" \<\< hfsm\_-\>getCurrentStateName()
 \<\< std::endl;
 
 std::cout \<\< \" HFSM En ejecución: \" \<\< (hfsm\_-\>isRunning() ?
-\"✅ Sí\" : \"❌ No\") \<\< std::endl;
+\"Sí\" : \"No\") \<\< std::endl;
 
-std::cout \<\< \" Sistema activo: \" \<\< (running\_ ? \"✅ Sí\" : \"❌
+std::cout \<\< \" Sistema activo: \" \<\< (running\_ ? \" Sí\" : \"
 No\") \<\< std::endl;
 
 // Estadísticas de suscripciones
@@ -5480,7 +4886,7 @@ private:
 
 void initializeSystem() {
 
-std::cout \<\< \"🔧 INICIALIZANDO SISTEMA\...\" \<\< std::endl;
+std::cout \<\< \" INICIALIZANDO SISTEMA\...\" \<\< std::endl;
 
 // 1. Configurar logging
 
@@ -5509,7 +4915,7 @@ std::make_unique\<NavigationSimulator\>(\*hfsm\_);
 
 setupSystemSubscriptions();
 
-std::cout \<\< \"✅ Sistema inicializado\" \<\< std::endl;
+std::cout \<\< \" Sistema inicializado\" \<\< std::endl;
 
 }
 
@@ -5555,33 +4961,21 @@ hardware::DiagnosticLevel::INFO,
 
 void registerAllStates() {
 
-std::cout \<\< \"📝 REGISTRANDO ESTADOS\...\" \<\< std::endl;
+std::cout \<\< \" REGISTRANDO ESTADOS\...\" \<\< std::endl;
 
 // Estados base del sistema
-
 registerState(std::make_unique\<ns_fsm::StartupState\>());
-
 registerState(std::make_unique\<ns_fsm::IdleStateWithSubscriptions\>());
-
 registerState(std::make_unique\<ns_fsm::PlanningState\>());
-
 registerState(std::make_unique\<ns_fsm::NavigatingStateWithSubscriptions\>());
-
 registerState(std::make_unique\<ns_fsm::ObstacleAvoidanceState\>());
-
 registerState(std::make_unique\<ns_fsm::ChargingState\>());
-
 registerState(std::make_unique\<ns_fsm::ErrorState\>());
-
 registerState(std::make_unique\<ns_fsm::TeleoperationState\>());
-
 registerState(std::make_unique\<ns_fsm::CleaningState\>());
-
 registerState(std::make_unique\<ns_fsm::ShutdownState\>());
-
-std::cout \<\< \"✅ \" \<\< states\_.size() \<\< \" estados
+std::cout \<\< \" \" \<\< states\_.size() \<\< \" estados
 registrados\" \<\< std::endl;
-
 }
 
 void registerState(std::unique_ptr\<ns_fsm::IState\> state) {
@@ -5615,7 +5009,7 @@ std::cerr \<\< \" ✗ Error registrando estado \" \<\< state_type
 
 void setupStateSubscriptions() {
 
-std::cout \<\< \"\\n📡 CONFIGURANDO SUSCRIPCIONES DE ESTADO\...\" \<\<
+std::cout \<\< \"\\n CONFIGURANDO SUSCRIPCIONES DE ESTADO\...\" \<\<
 std::endl;
 
 // Registrar suscripciones predefinidas para cada estado
@@ -5626,7 +5020,7 @@ hfsm\_-\>registerPredefinedStateSubscriptions(state_type);
 
 }
 
-std::cout \<\< \"✅ Suscripciones configuradas\" \<\< std::endl;
+std::cout \<\< \" Suscripciones configuradas\" \<\< std::endl;
 
 }
 
@@ -5768,7 +5162,7 @@ error_msg,
 
 void systemLoop() {
 
-std::cout \<\< \"\\n🔄 INICIANDO LOOP PRINCIPAL DEL SISTEMA\" \<\<
+std::cout \<\< \"\\n INICIANDO LOOP PRINCIPAL DEL SISTEMA\" \<\<
 std::endl;
 
 int loop_counter = 0;
@@ -5831,7 +5225,7 @@ std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 }
 
-std::cout \<\< \"\\n🔚 LOOP PRINCIPAL FINALIZADO\" \<\< std::endl;
+std::cout \<\< \"\\n LOOP PRINCIPAL FINALIZADO\" \<\< std::endl;
 
 }
 
@@ -5854,16 +5248,14 @@ return ss.str();
 
 //
 ============================================================================
-
 // PROGRAMA PRINCIPAL - DEMOSTRACIÓN
-
 //
 ============================================================================
 
 int main() {
 
-std::cout \<\< \"🚀 DEMOSTRACIÓN: SISTEMA ROBÓTICO CON SUSCRIPCIONES
-🚀\" \<\< std::endl;
+std::cout \<\< \" DEMOSTRACIÓN: SISTEMA ROBÓTICO CON SUSCRIPCIONES
+\" \<\< std::endl;
 
 std::cout \<\< \"====================================================\"
 \<\< std::endl;
@@ -5888,7 +5280,7 @@ std::cout \<\< \"\\n🎬 INICIANDO DEMOSTRACIÓN\...\" \<\< std::endl;
 
 // Paso 1: Enviar misión
 
-std::cout \<\< \"\\n1️⃣ ENVIANDO MISIÓN DE NAVEGACIÓN\...\" \<\<
+std::cout \<\< \"\\n1 ENVIANDO MISIÓN DE NAVEGACIÓN\...\" \<\<
 std::endl;
 
 robot_system.sendMission(\"Explorar laboratorio - Puntos A, B, C\");
@@ -5897,14 +5289,14 @@ std::this_thread::sleep_for(std::chrono::seconds(5));
 
 // Paso 2: Simular obstáculo (después de 5 segundos)
 
-std::cout \<\< \"\\n2️⃣ SIMULANDO DETECCIÓN DE OBSTÁCULO\...\" \<\<
+std::cout \<\< \"\\n2 SIMULANDO DETECCIÓN DE OBSTÁCULO\...\" \<\<
 std::endl;
 
 std::this_thread::sleep_for(std::chrono::seconds(3));
 
 // Paso 3: Solicitar shutdown elegante
 
-std::cout \<\< \"\\n3️⃣ SOLICITANDO SHUTDOWN ELEGANTE\...\" \<\<
+std::cout \<\< \"\\n3 SOLICITANDO SHUTDOWN ELEGANTE\...\" \<\<
 std::endl;
 
 robot_system.requestShutdown();
@@ -5913,16 +5305,16 @@ std::this_thread::sleep_for(std::chrono::seconds(5));
 
 // Paso 4: Apagar sistema
 
-std::cout \<\< \"\\n4️⃣ APAGANDO SISTEMA\...\" \<\< std::endl;
+std::cout \<\< \"\\n4 APAGANDO SISTEMA\...\" \<\< std::endl;
 
 robot_system.shutdown();
 
-std::cout \<\< \"\\n✅ DEMOSTRACIÓN COMPLETADA EXITOSAMENTE\" \<\<
+std::cout \<\< \"\\n DEMOSTRACIÓN COMPLETADA EXITOSAMENTE\" \<\<
 std::endl;
 
 } catch (const std::exception& e) {
 
-std::cerr \<\< \"\\n❌ ERROR EN LA DEMOSTRACIÓN: \" \<\< e.what() \<\<
+std::cerr \<\< \"\\n ERROR EN LA DEMOSTRACIÓN: \" \<\< e.what() \<\<
 std::endl;
 
 return 1;
@@ -5933,7 +5325,7 @@ return 0;
 
 }
 
-## 📊 Visualización de Suscripciones
+## Visualización de Suscripciones
 
 // subscription_visualizer.cpp - Herramienta para visualizar
 suscripciones
@@ -5941,84 +5333,54 @@ suscripciones
 #include \"hfsm_core.hpp\"
 
 #include \<iostream\>
-
 #include \<iomanip\>
-
 #include \<map\>
 
 class SubscriptionVisualizer {
-
 private:
-
 const ns_fsm::HFSMCoreWithSubscriptions& hfsm\_;
 
 public:
-
 SubscriptionVisualizer(const ns_fsm::HFSMCoreWithSubscriptions& hfsm)
-
 : hfsm\_(hfsm) {}
 
 void visualizeAllSubscriptions() {
-
-std::cout \<\< \"\\n📊 VISUALIZACIÓN DE SUSCRIPCIONES DEL SISTEMA\" \<\<
+std::cout \<\< \"\\n VISUALIZACIÓN DE SUSCRIPCIONES DEL SISTEMA\" \<\<
 std::endl;
-
 std::cout \<\< \"===========================================\" \<\<
 std::endl;
-
 auto stats = hfsm\_.getSubscriptionStats();
 
 // Mostrar resumen general
-
-std::cout \<\< \"\\n📈 RESUMEN GENERAL:\" \<\< std::endl;
-
+std::cout \<\< \"\\n RESUMEN GENERAL:\" \<\< std::endl;
 std::cout \<\< \" Total suscripciones: \" \<\<
 stats\[\"total_subscriptions\"\] \<\< std::endl;
 
 // Mostrar suscripciones por estado
-
-std::cout \<\< \"\\n📋 SUSCRIPCIONES POR ESTADO:\" \<\< std::endl;
-
+std::cout \<\< \"\\n SUSCRIPCIONES POR ESTADO:\" \<\< std::endl;
 std::cout \<\< std::left \<\< std::setw(25) \<\< \"ESTADO\"
-
 \<\< std::setw(15) \<\< \"SUSCRIPCIONES\"
-
 \<\< \"EVENTOS\" \<\< std::endl;
 
 std::cout \<\< std::string(60, \'-\') \<\< std::endl;
-
 auto state_subs = stats\[\"state_subscriptions\"\];
-
 for (auto& \[state_str, state_info\] : state_subs.items()) {
-
 uint32_t state_type = std::stoi(state_str);
-
 std::string state_name = getStateName(state_type);
-
 int event_count = state_info\[\"event_count\"\];
-
 std::cout \<\< std::left \<\< std::setw(25) \<\< state_name
-
 \<\< std::setw(15) \<\< event_count;
 
 // Mostrar primeros 3 eventos
-
 auto events = state_info\[\"events\"\];
 
 int shown = 0;
-
 for (const auto& event_type : events) {
-
 if (shown++ \< 3) {
-
 std::cout \<\< ns_fsm::eventTypeToString(
-
 static_cast\<ns_fsm::EventType\>(event_type.get\<uint32_t\>()))
-
 \<\< \", \";
-
 }
-
 }
 
 if (events.size() \> 3) {
@@ -6033,7 +5395,7 @@ std::cout \<\< std::endl;
 
 // Mostrar estado actual y sus suscripciones activas
 
-std::cout \<\< \"\\n🎯 ESTADO ACTUAL:\" \<\< std::endl;
+std::cout \<\< \"\\n ESTADO ACTUAL:\" \<\< std::endl;
 
 uint32_t current_state = hfsm\_.getCurrentStateType();
 
@@ -6127,7 +5489,7 @@ break;
 
 if (!found) {
 
-std::cout \<\< \" ⚠️ Ningún estado escucha este evento\" \<\< std::endl;
+std::cout \<\< \" Ningún estado escucha este evento\" \<\< std::endl;
 
 }
 
@@ -6257,9 +5619,9 @@ return \"Manejo interno\";
 
 };
 
-## 🎯 Resumen de Estrategias de Suscripción
+## Resumen de Estrategias de Suscripción
 
-### **Estrategia 1: Suscripción Directa en Estados** ✅ **RECOMENDADA**
+### **Estrategia 1: Suscripción Directa en Estados**  **RECOMENDADA**
 
 -   **Ventajas:**
 
@@ -6284,7 +5646,7 @@ subscribeToEvent(EventType::MY_EVENT,
 
 };
 
-### **Estrategia 2: Suscripción Centralizada** ✅ **PARA SISTEMAS COMPLEJOS**
+### **Estrategia 2: Suscripción Centralizada** **PARA SISTEMAS COMPLEJOS**
 
 -   **Ventajas:**
 
