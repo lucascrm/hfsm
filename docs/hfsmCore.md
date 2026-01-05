@@ -36,8 +36,7 @@ gestión de estados, eventos y transiciones en sistemas complejos.
 
 ### Diagrama de Componentes
 
-![](./10000001000003B1000002CFBBCDA7E618B55C47.png){width="11.543cm"
-height="8.782cm"}
+![](./10000001000003B1000002CFBBCDA7E618B55C47.png)
 
 ### Flujo de Datos
 
