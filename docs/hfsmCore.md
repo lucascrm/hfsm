@@ -56,11 +56,14 @@ gestión de estados, eventos y transiciones en sistemas complejos.
 ### 1. **EventBus** - Sistema de Publicación/Suscripción
 
 class EventBus {
+
 // Publicar eventos
 void publish(const Event& event);
+
 // Suscribirse a tipos de eventos
 void subscribe(const std::string& id, uint32_t event_type,
 std::function\<void(const Event&)\> callback, int priority = 0);
+
 // Procesar eventos pendientes
 bool processOne();
 
