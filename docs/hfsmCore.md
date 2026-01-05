@@ -61,6 +61,7 @@ class EventBus {
 void publish(const Event& event);
 
 // Suscribirse a tipos de eventos
+
 void subscribe(const std::string& id, uint32_t event_type,
 std::function\<void(const Event&)\> callback, int priority = 0);
 
