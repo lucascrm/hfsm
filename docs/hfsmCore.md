@@ -90,36 +90,54 @@ virtual bool canTransitionTo(uint32_t target) const = 0; // Validación
 ### 3. **HFSMCore** - Núcleo Principal
 
 class HFSMCore {
+
 // Gestión del ciclo de vida
+
 ErrorCode initialize();
+
 ErrorCode shutdown(bool emergency = false);
 
 // Gestión de estados
+
 ErrorCode registerState(std::unique_ptr\<IState\> state);
+
 ErrorCode transitionTo(uint32_t target);
 
 // Sistema de eventos
+
 void publishEvent(const Event& event);
+
 EventBus& getEventBus();
 
 // Consulta de estado
+
 uint32_t getCurrentStateType() const;
+
 bool isRunning() const;
+
 };
 
 ### 4. **Event** - Estructura de Datos para Eventos
 
 struct Event {
+
 EventType type; // Tipo de evento
+
 EventData data; // Datos del evento (variant)
+
 std::chrono::system_clock::time_point timestamp; // Marca temporal
+
 std::string source_module; // Origen del evento
+
 uint32_t sequence_number{0}; // Número de secuencia
+
 int priority{0}; // Prioridad (0=normal, \>0=alta)
 
 // Métodos de utilidad
 template\<typename T\>
+
 std::optional\<T\> getDataAs() const; // Obtener datos tipados
+
 };
 
 ## API de la HFSMCore
