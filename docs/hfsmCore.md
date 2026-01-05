@@ -66,6 +66,7 @@ void subscribe(const std::string& id, uint32_t event_type,
 std::function\<void(const Event&)\> callback, int priority = 0);
 
 // Procesar eventos pendientes
+
 bool processOne();
 
 };
@@ -73,11 +74,17 @@ bool processOne();
 ### 2. **IState** - Interfaz Base para Estados
 
 class IState {
+
 virtual bool onEnter() = 0; // Al entrar al estado
+
 virtual bool onExit() = 0; // Al salir del estado
+
 virtual void update() = 0; // Actualización periódica
+
 virtual bool handleEvent(const Event& event) = 0; // Manejo de eventos
+
 virtual bool canTransitionTo(uint32_t target) const = 0; // Validación
+
 };
 
 ### 3. **HFSMCore** - Núcleo Principal
