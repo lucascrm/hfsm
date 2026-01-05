@@ -153,7 +153,7 @@ establece el estado inicial.
 
 **Retorno:**
 
--   *ErrorCode::SUCCESS* - Inicialización exitosa
+-   *ErrorCode::SUCCESS* - Inicialización realizada
 -   *ErrorCode::ALREADY_INITIALIZED* - Ya estaba inicializada
 -   *ErrorCode::THREAD_START_FAILED* - Error al crear el thread
 
