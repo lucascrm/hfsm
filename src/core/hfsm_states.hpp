@@ -1,4 +1,31 @@
-// hfsm_states.hpp - ESTADOS DE HFSM SIN DEPENDENCIAS CIRCULARES
+/**
+ * @file     hfsm_states.hpp
+ * @brief    Implementación de estados concretos para el sistema HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene las implementaciones concretas de todos los
+ *           estados del sistema HFSM, incluyendo:
+ *           - Estados base del sistema (Uninitialized, Ready, Error, Shutdown, etc.)
+ *           - Estados avanzados de robótica (Navigating, Manipulating, Charging, etc.)
+ *           - Lógica de transición específica para cada estado
+ *           - Manejo de eventos con respuestas apropiadas
+ *           - Timeouts configurados por estado
+ *           - Callbacks para extensibilidad
+ * 
+ * @note     Todos los estados siguen el principio de no acceder directamente al
+ *           hardware, delegando en módulos especializados a través de eventos.
+ *           Esto mantiene la separación de responsabilidades y facilita el testing.
+ * 
+ * @warning  Los estados de robótica asumen que los módulos correspondientes
+ *           están registrados y funcionando. Verificar disponibilidad antes de
+ *           transicionar a estos estados.
+ * 
+ * @see      hfsm_core.hpp - Interfaz IState y contexto HFSM
+ * @see      hfsm_event_types.hpp - Tipos de eventos manejados por los estados
+ */
 #ifndef HFSM_STATES_FIXED_HPP
 #define HFSM_STATES_FIXED_HPP
 

@@ -1,4 +1,30 @@
-// hfsm_config_client.hpp
+/**
+ * @file     hfsm_config_client.hpp
+ * @brief    Cliente unificado para gestión de configuración del sistema HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo define el cliente de configuración que centraliza el acceso
+ *           y gestión de configuración para el sistema HFSM. Proporciona:
+ *           - Unificación de ConfigManager, HFSMCore y AlertManager
+ *           - Gestión de cambios dinámicos de configuración
+ *           - Factory methods para diferentes entornos (producción, desarrollo)
+ *           - Persistencia y validación de configuración
+ *           - Sistema de callbacks para cambios de configuración
+ * 
+ * @note     El cliente actúa como fachada para simplificar el acceso a múltiples
+ *           subsistemas de configuración. Es responsable de mantener la consistencia
+ *           entre diferentes componentes cuando la configuración cambia.
+ * 
+ * @warning  Cambios de configuración en tiempo real pueden afectar el funcionamiento
+ *           del sistema. Usar con precaución en producción.
+ * 
+ * @see      hfsm_config_manager.hpp - Manejador principal de configuración
+ * @see      hfsm_core.hpp - Núcleo HFSM que usa la configuración
+ * @see      hfsm_alerts.hpp - Sistema de alertas configurable
+ */
 #ifndef HFSM_CONFIG_CLIENT_HPP
 #define HFSM_CONFIG_CLIENT_HPP
 

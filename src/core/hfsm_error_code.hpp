@@ -1,3 +1,28 @@
+/**
+ * @file     hfsm_error_code.hpp
+ * @brief    Definición de códigos de error específicos del sistema HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo define el enum ErrorCode que contiene todos los códigos
+ *           de error específicos del sistema HFSM, organizados en categorías:
+ *           - Éxito (SUCCESS)
+ *           - Errores de estados (STATE_*)
+ *           - Errores de módulos (MODULE_*)
+ *           - Errores de apagado (SHUTDOWN_*)
+ *           - Errores generales del sistema
+ *           - Error crítico (CRITICAL_FAILURE)
+ * 
+ * @note     Los códigos están organizados en rangos para facilitar la identificación
+ *           y filtrado de errores. Cada categoría tiene su propio rango numérico.
+ * 
+ * @warning  No modificar los valores numéricos una vez establecidos para mantener
+ *           compatibilidad con sistemas existentes.
+ * 
+ * @see      hfsm_core.hpp - Uso de ErrorCode en el núcleo HFSM
+ */
 #ifndef HFSM_ERRORCODE_HPP
 #define HFSM_ERRORCODE_HPP
 

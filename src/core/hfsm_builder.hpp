@@ -1,4 +1,31 @@
-// hfsm_builder_fixed.hpp - BUILDER SIN DEPENDENCIAS CIRCULARES
+/**
+ * @file     hfsm_builder.hpp
+ * @brief    Builder para crear Hierarchical Finite State Machines (HFSM) con configuración fluida
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo implementa el patrón Builder para la creación y configuración
+ *           de Máquinas de Estado Jerárquicas (HFSM). Proporciona una API fluida para:
+ *           - Registrar estados y transiciones
+ *           - Configurar parámetros de tiempo y comportamiento
+ *           - Definir callbacks para eventos de estado
+ *           - Crear configuraciones predefinidas (robótica, producción, testing)
+ *           - Validar la configuración de la HFSM
+ * 
+ * @note     Implementa el patrón Builder con soporte para move semantics,
+ *           eliminando dependencias circulares presentes en versiones anteriores.
+ *           Incluye factory para creación de estados y builders especializados
+ *           para diferentes dominios de aplicación.
+ * 
+ * @warning  No es thread-safe en todas las operaciones. Usar con precaución
+ *           en entornos multi-hilo concurrentes.
+ * 
+ * @see      hfsm_core.hpp - Implementación principal de la HFSM
+ * @see      hfsm_states.hpp - Definiciones de estados base
+ * @see      hfsm_event_types.hpp - Definiciones de tipos de eventos
+ */
 #ifndef HFSM_BUILDER_FIXED_HPP
 #define HFSM_BUILDER_FIXED_HPP
 

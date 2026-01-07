@@ -1,4 +1,27 @@
-// hfsm_logging_helpers.hpp - FUNCIONES HELPER PARA LOGGING (sin macros)
+/**
+ * @file     hfsm_logging_helpers.hpp
+ * @brief    Funciones helper inline para logging estructurado sin macros
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo proporciona funciones helper inline para logging
+ *           estructurado sin usar macros, ideal para:
+ *           - Evitar conflictos de nombres en headers complejos
+ *           - Mejor depuración (puntos de interrupción en funciones reales)
+ *           - Mayor flexibilidad y control de tipos
+ *           - Uso en templates y contextos donde las macros son problemáticas
+ * 
+ * @note     Estas funciones son wrappers simples alrededor de HFSMLogger.
+ *           Proporcionan la misma funcionalidad que las macros pero con
+ *           mejor integración con el sistema de tipos de C++.
+ * 
+ * @warning  Al ser inline, estas funciones deben definirse en headers.
+ *           No añadir lógica compleja para evitar code bloat.
+ * 
+ * @see      hfsm_logging.hpp - Sistema de logging principal con macros
+ */
 #ifndef HFSM_LOGGING_HELPERS_HPP
 #define HFSM_LOGGING_HELPERS_HPP
 

@@ -1,4 +1,31 @@
-// hfsm_config_manager.cpp
+/**
+ * @file     hfsm_config_manager.cpp
+ * @brief    Implementación completa del sistema de gestión de configuración
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene la implementación completa del ConfigManager,
+ *           incluyendo:
+ *           - Sistema de carga/guardado de configuración desde múltiples fuentes
+ *           - Validación con JSON Schema
+ *           - Monitoreo automático de cambios en archivos
+ *           - Sistema de callbacks para cambios de configuración
+ *           - Historial de cambios y auditoría
+ *           - Configuraciones específicas para HFSM y alertas
+ *           - Checksums para integridad de datos
+ * 
+ * @note     Implementa un sistema de prioridades para resolver conflictos entre
+ *           múltiples fuentes de configuración. Incluye soporte para formatos
+ *           JSON, XML, YAML e INI (aunque algunos requieren librerías adicionales).
+ * 
+ * @warning  La validación de schemas es básica en esta implementación. Para
+ *           validación completa de JSON Schema, se requiere integración adicional.
+ * 
+ * @see      hfsm_config_manager.hpp - Declaración de clases y métodos
+ * @see      hfsm_config_core.hpp - Estructuras de configuración HFSM
+ */
 #include "hfsm_config_manager.hpp"
 #include "hfsm_logging.hpp"
 

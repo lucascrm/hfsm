@@ -1,4 +1,28 @@
-// hfsm_event.cpp - IMPLEMENTACIÓN DE EVENTOS Y FUNCIONES DE UTILIDAD
+/**
+ * @file     hfsm_event_types.cpp
+ * @brief    Implementación de estructuras de eventos y funciones de utilidad
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene la implementación completa de:
+ *           - Constructores de Event con diferentes tipos de datos
+ *           - Métodos de serialización (toJson, toString)
+ *           - Funciones de conversión para enumeraciones (eventTypeToString, stateTypeToString)
+ *           - Instanciaciones explícitas de plantillas para tipos de datos soportados
+ *           - Métodos de validación y chequeo de eventos
+ * 
+ * @note     Incluye conversión de timestamps a formato legible y serialización
+ *           JSON completa para depuración y logging. Los eventos pueden contener
+ *           datos en múltiples formatos usando std::variant.
+ * 
+ * @warning  Las funciones de conversión para tipos desconocidos devuelven strings
+ *           con el valor numérico. Asegurarse de mantener actualizadas las funciones
+ *           cuando se añadan nuevos tipos de eventos o estados.
+ * 
+ * @see      hfsm_event_types.hpp - Declaraciones de estructuras y enumeraciones
+ */
 #include "hfsm_event_types.hpp"
 
 #include <algorithm>

@@ -1,6 +1,30 @@
-// file name: hfsm_logging_fixed.cpp
-// file content begin
-// hfsm_logging_fixed.cpp - VERSIÓN LIMPIA SIN DEBUGGING
+/**
+ * @file     hfsm_logging.cpp
+ * @brief    Implementación del sistema de logging estructurado para HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo implementa el sistema completo de logging estructurado,
+ *           incluyendo:
+ *           - Logging síncrono para inicialización y casos críticos
+ *           - Logging asíncrono con buffer para mejor rendimiento
+ *           - Rotación automática de archivos de log
+ *           - Formateo de timestamps y metadatos
+ *           - Filtrado por nivel y subsistema
+ *           - Métodos específicos para dominio HFSM (transiciones, eventos, errores)
+ *           - Gestión de hilos y sincronización segura
+ * 
+ * @note     Usa un patrón producer-consumer con buffer para logging asíncrono.
+ *           Incluye rotación automática basada en tamaño y número máximo de archivos.
+ *           Es compatible con el sistema de diagnóstico del hardware.
+ * 
+ * @warning  El logging síncrono (logDirect) puede afectar rendimiento si se usa
+ *           en bucles rápidos. Preferir el logging asíncrono para operaciones normales.
+ * 
+ * @see      hfsm_logging.hpp - Declaración de clases y configuración
+ */
 #include "hfsm_logging.hpp"
 
 #include <iomanip>

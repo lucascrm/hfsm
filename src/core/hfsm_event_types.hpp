@@ -1,4 +1,30 @@
-// hfsm_event_types.hpp - TIPOS DE EVENTOS Y ESTRUCTURAS BÁSICAS
+/**
+ * @file     hfsm_event_types.hpp
+ * @brief    Definiciones de tipos de eventos, estados y estructuras básicas para HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene todas las definiciones fundamentales para el
+ *           sistema de eventos del HFSM, incluyendo:
+ *           - Enumeraciones EventType y StateType con valores organizados por categorías
+ *           - Estructuras de datos básicas (ErrorInfo, SpeedLimits)
+ *           - Variante EventData para datos de eventos tipados
+ *           - Estructura Event principal con metadatos completos
+ *           - Funciones de utilidad para conversión de enumeraciones
+ * 
+ * @note     Los tipos de eventos están organizados en rangos por categoría para
+ *           facilitar el filtrado y procesamiento. EventType::USER_DEFINED_START
+ *           marca el inicio del rango para eventos definidos por el usuario.
+ * 
+ * @warning  No cambiar los valores numéricos de los eventos base para mantener
+ *           compatibilidad. Añadir nuevos eventos al final de las categorías o
+ *           en el rango de usuario.
+ * 
+ * @see      hfsm_core.hpp - Uso de eventos en el sistema HFSM
+ * @see      hfsm_states.hpp - Estados que responden a eventos
+ */
 #ifndef HFSM_EVENT_TYPES_HPP
 #define HFSM_EVENT_TYPES_HPP
 

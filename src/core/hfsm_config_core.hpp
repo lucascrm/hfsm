@@ -1,4 +1,28 @@
-// hfsm_config_core.hpp - CONFIGURACIÓN ÚNICA Y CENTRALIZADA
+/**
+ * @file     hfsm_config_core.hpp
+ * @brief    Definición centralizada de estructura de configuración del HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo define la estructura HFSMConfig que centraliza todos los
+ *           parámetros de configuración del sistema HFSM, incluyendo:
+ *           - Timeouts de estados y eventos
+ *           - Parámetros de control del loop principal
+ *           - Configuración de watchdog y logging
+ *           - Gestión de errores y shutdown
+ *           - Estructuras organizadas para mejor mantenibilidad
+ * 
+ * @note     Usa una estructura organizada interna (Timeouts) para agrupar
+ *           parámetros relacionados, manteniendo campos legacy para compatibilidad.
+ *           El método syncAll() mantiene consistencia entre campos.
+ * 
+ * @warning  Los campos legacy están marcados como obsoletos. Usar la estructura
+ *           organizada para nuevas funcionalidades.
+ * 
+ * @see      hfsm_config_manager.hpp - Sistema de gestión de configuración completa
+ */
 #ifndef HFSM_CONFIG_CORE_HPP
 #define HFSM_CONFIG_CORE_HPP
 

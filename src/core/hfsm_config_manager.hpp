@@ -1,4 +1,30 @@
-// hfsm_config_manager.hpp
+/**
+ * @file     hfsm_config_manager.hpp
+ * @brief    Sistema avanzado de gestión de configuración para HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo define el sistema completo de gestión de configuración,
+ *           incluyendo:
+ *           - Clase ConfigManager con soporte para múltiples formatos (JSON, XML, YAML, INI)
+ *           - Sistema de prioridades para resolución de conflictos
+ *           - Validación con JSON Schema
+ *           - Callbacks para cambios dinámicos de configuración
+ *           - Historial de cambios y auditoría
+ *           - Plantillas para acceso seguro a datos tipados
+ *           - Configuraciones específicas para HFSM
+ *           - Excepciones especializadas para manejo de errores
+ * 
+ * @note     Usa shared_mutex para acceso concurrente seguro. Incluye sistema de
+ *           monitoreo automático de archivos para recarga en caliente.
+ * 
+ * @warning  La implementación de parsing de XML, YAML e INI requiere librerías
+ *           externas. La validación de schema es básica en esta versión.
+ * 
+ * @see      hfsm_config_core.hpp - Estructura principal de configuración HFSM
+ */
 #ifndef HFSM_CONFIG_MANAGER_HPP
 #define HFSM_CONFIG_MANAGER_HPP
 

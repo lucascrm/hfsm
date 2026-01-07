@@ -1,4 +1,33 @@
-// hfsm_core.cpp - IMPLEMENTACIÓN COMPLETA DEL HFSM CORE CON LOGGING INTEGRADO
+/**
+ * @file     hfsm_core.cpp
+ * @brief    Implementación principal del núcleo de la Hierarchical Finite State Machine (HFSM)
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene la implementación completa del núcleo de la HFSM,
+ *           incluyendo:
+ *           - Implementación del bus de eventos (EventBus) con sistema de suscripción/publicación
+ *           - Bucle principal de ejecución con gestión de estados y procesamiento de eventos
+ *           - Sistema de logging estructurado integrado con niveles de diagnóstico
+ *           - Mecanismos de timeout y watchdog para monitoreo del estado
+ *           - Sistemas de shutdown ordenado y de emergencia
+ *           - Gestión de transiciones de estado con validaciones y callbacks
+ *           - Estadísticas en tiempo real del sistema
+ * 
+ * @note     Implementa el patrón de diseño State Machine con soporte para jerarquía,
+ *           procesamiento asíncrono de eventos y gestión de recursos. Incluye
+ *           integración con ModuleManager para gestión modular del sistema.
+ * 
+ * @warning  El sistema incluye mecanismos de deadlock prevention. Evitar llamadas
+ *           recursivas que puedan causar bloqueos mutuos.
+ * 
+ * @see      hfsm_core.hpp - Declaraciones de clases y métodos
+ * @see      hfsm_builder.hpp - Builder para configuración fluida de la HFSM
+ * @see      hfsm_logging.hpp - Sistema de logging estructurado
+ * @see      hfsm_event_types.hpp - Definiciones de tipos de eventos
+ */
 #include "hfsm_core.hpp"
 #include "hfsm_event_types.hpp"
 #include "modules/manager/ModuleManager.h"

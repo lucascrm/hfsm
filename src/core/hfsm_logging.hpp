@@ -1,4 +1,32 @@
-// hfsm_logging.hpp - VERSIÓN CORREGIDA CON INICIALIZACIÓN ROBUSTA
+/**
+ * @file     hfsm_logging.hpp
+ * @brief    Sistema de logging estructurado y configurable para HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo define el sistema de logging estructurado del HFSM,
+ *           incluyendo:
+ *           - Clase HFSMLogger con patron singleton
+ *           - Configuración flexible (archivo, consola, niveles, filtros)
+ *           - Logging asíncrono con buffer para máximo rendimiento
+ *           - Métodos específicos para dominio HFSM
+ *           - Macros de conveniencia para uso simplificado
+ *           - Integración con sistema de diagnóstico del hardware
+ *           - Métricas de rendimiento integradas
+ * 
+ * @note     Implementa inicialización robusta con fallback a logging síncrono
+ *           si el sistema no está inicializado. Usa condition variables para
+ *           sincronización eficiente del buffer.
+ * 
+ * @warning  Las macros de conveniencia deben usarse con cuidado para evitar
+ *           conflictos de nombres. No usar en headers que puedan ser incluidos
+ *           múltiples veces sin control.
+ * 
+ * @see      hfsm_logging_helpers.hpp - Funciones helper sin macros
+ * @see      hardware/utils/Diagnostics.h - Sistema de diagnóstico base
+ */
 #ifndef HFSM_LOGGING_HPP
 #define HFSM_LOGGING_HPP
 

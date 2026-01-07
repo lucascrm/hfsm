@@ -1,4 +1,26 @@
-// hfsm_config_core.cpp - IMPLEMENTACIÓN DE CONFIGURACIÓN
+/**
+ * @file     hfsm_config_core.cpp
+ * @brief    Implementación de estructuras básicas de configuración del HFSM
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene la implementación de los métodos de HFSMConfig,
+ *           incluyendo constructores, métodos de sincronización y configuración
+ *           por defecto. Proporciona:
+ *           - Implementación de sincronización entre campos legacy y organizados
+ *           - Constructor por defecto con valores robustos
+ *           - Gestión coherente de timeouts y parámetros de control
+ * 
+ * @note     La sincronización (syncAll) es crítica para mantener consistencia
+ *           entre campos legacy y la nueva estructura organizada de timeouts.
+ * 
+ * @warning  Cambiar manualmente los campos legacy sin llamar a syncAll() puede
+ *           causar inconsistencias en el sistema.
+ * 
+ * @see      hfsm_config_core.hpp - Declaración de estructuras de configuración
+ */
 #include "hfsm_config_core.hpp"
 
 namespace ns_fsm {

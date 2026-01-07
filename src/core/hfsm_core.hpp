@@ -1,4 +1,34 @@
-// hfsm_core.hpp - VERSIÓN CORREGIDA SIN DEPENDENCIAS CIRCULARES
+/**
+ * @file     hfsm_core.hpp
+ * @brief    Declaración principal del núcleo de Hierarchical Finite State Machine (HFSM)
+ * @author   Lucas C.
+ * @date     27/12/2025
+ * @version  1.0
+ * @license  MIT
+ * 
+ * @details  Este archivo contiene las declaraciones de las clases principales del
+ *           sistema HFSM, incluyendo:
+ *           - EventBus: Sistema de eventos asíncronos con prioridad y suscripciones
+ *           - IState: Interfaz base para todos los estados de la máquina
+ *           - HFSMCore: Núcleo principal que gestiona estados, eventos y transiciones
+ *           
+ *           La implementación está diseñada para evitar dependencias circulares
+ *           mediante forward declarations y separación clara de responsabilidades.
+ * 
+ * @note     Esta versión elimina dependencias circulares mediante la separación
+ *           de declaraciones e implementaciones. Usa forward declarations para
+ *           tipos dependientes como Event, ModuleManager y IState.
+ * 
+ * @warning  La interfaz IState debe ser implementada completamente por los estados
+ *           concretos. No instanciar HFSMCore directamente, usar HFSMBuilder para
+ *           creación segura.
+ * 
+ * @see      hfsm_core.cpp - Implementación completa de los métodos declarados aquí
+ * @see      hfsm_builder.hpp - Builder para creación segura de instancias HFSM
+ * @see      hfsm_config_core.hpp - Configuración del sistema HFSM
+ * @see      hfsm_error_code.hpp - Códigos de error del sistema
+ * @see      hfsm_states.hpp - Implementaciones concretas de estados
+ */
 #ifndef HFSM_CORE_FIXED_HPP
 #define HFSM_CORE_FIXED_HPP
 
