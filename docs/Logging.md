@@ -999,3 +999,4 @@ Siguiendo las guías y mejores prácticas presentadas, los desarrolladores
 pueden implementar un sistema de logging efectivo que proporcione
 visibilidad valiosa mientras mantiene un impacto mínimo en el
 rendimiento del sistema.
+---
